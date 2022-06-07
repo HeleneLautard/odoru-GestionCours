@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: gestionCours
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: base
+      password: root
+      username: root
+      authentication-database: admin
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka
+
+logging:
+  level:
+    org.springframework.web: INFO
+server:
+  port: 10002
