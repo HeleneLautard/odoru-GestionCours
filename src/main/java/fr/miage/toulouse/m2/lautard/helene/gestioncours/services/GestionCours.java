@@ -55,4 +55,11 @@ public interface GestionCours {
      * @return liste des cours
      */
     Iterable<Cours> getCoursParticipant(Long num_participant);
+
+    /**
+     * Suppression d'un cours de la base de données
+     * @param id identifiant du cours
+     * @throws CoursNotFoundException
+     */
+    void deleteCours(Long id)throws CoursNotFoundException;
 }

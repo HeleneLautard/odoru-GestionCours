@@ -26,9 +26,9 @@ public class Cours {
     @Field
     private int niveau;
 
- //   @Field
-  //  @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-   // private Date date;
+    @Field
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
+    private Date date;
 
     @Field
     private String lieu;
@@ -42,12 +42,11 @@ public class Cours {
     @Field
     List<Long> listeParticipants;
 
-  //  public Cours(String titre, int niveau, Date date, String lieu, Long duree, Long idEnseignant, List<Long> listeParticipants) {
-    public Cours(String titre, int niveau, String lieu, Long duree, Long idEnseignant, List<Long> listeParticipants) {
+    public Cours(String titre, int niveau,Date date, String lieu, Long duree, Long idEnseignant, List<Long> listeParticipants) {
 
         this.titre = titre;
         this.niveau = niveau;
-      //  this.date = date;
+        this.date = date;
         this.lieu = lieu;
         this.duree = duree;
         this.idEnseignant = idEnseignant;

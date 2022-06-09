@@ -5,15 +5,13 @@ import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.BadDateExcept
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.CoursNotFoundException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.InscriptionException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.repositories.CoursRepository;
-import fr.miage.toulouse.m2.lautard.helene.gestioncours.rest.CoursRestController;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class GestionCoursImpl implements GestionCours {
@@ -25,17 +23,17 @@ public class GestionCoursImpl implements GestionCours {
     @Override
     public Cours creerCours(Cours cours) throws BadDateException {
         // Vérifier la date du cours
-       /* Date jour = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date dateSaisie = new Date();
         Calendar c = Calendar.getInstance();
-        c.setTime(jour);
-        c.add(Calendar.DATE, 7);
-        Date newDate = c.getTime();
+        c.setTime(dateSaisie);
+        c.add(Calendar.DATE, 7); // Ajout de 7 jours à la date du jour
 
-        if (newDate.compareTo(cours.getDate()) > 0) {
+        if (dateSaisie.compareTo(cours.getDate()) > 0) {
             throw new BadDateException("La date d’un cours doit toujours être supérieure de 7 jours calendaires par rapport à la date de saisie.");
-        } else {*/
+        } else {
             return this.coursRepository.save(cours);
-       // }
+        }
     }
 
     @Override
@@ -71,5 +69,15 @@ public class GestionCoursImpl implements GestionCours {
     @Override
     public Iterable<Cours> getCoursParticipant(Long num_participant) {
         return this.coursRepository.findAllByListeParticipantsContains(num_participant);
+    }
+
+    @Override
+    public void deleteCours(Long id) throws CoursNotFoundException {
+        if(this.coursRepository.existsById(id)){
+            Cours cours = this.coursRepository.findById(id).get();
+            this.coursRepository.delete(cours);
+        } else {
+            throw new CoursNotFoundException("Le cours n'existe pas, impossible de le supprimer");
+        }
     }
 }

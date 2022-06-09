@@ -5,14 +5,12 @@ import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.BadDateExcept
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.CoursNotFoundException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.InscriptionException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.services.GestionCours;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/cours")
@@ -89,6 +87,20 @@ public class CoursRestController {
         } catch (CoursNotFoundException | InscriptionException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Suppression d'un cours
+     * @param id identifiant du cours
+     */
+    @DeleteMapping("/{id}")
+    public void deleteCours(@PathVariable("id") Long id){
+        try{
+            this.gestionCours.deleteCours(id);
+        } catch(CoursNotFoundException ex){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.getMessage(), ex);
         }
     }
 }
