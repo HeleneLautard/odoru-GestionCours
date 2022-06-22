@@ -51,17 +51,6 @@ public class GestionCoursImpl implements GestionCours {
     }
 
     @Override
-    public Cours inscriptionCours(Long num_cours, Long num_participant) throws CoursNotFoundException, InscriptionException {
-        if(this.coursRepository.existsById(num_cours)){
-            Cours cours = this.coursRepository.findById(num_cours).get();
-            cours.getListeParticipants().add(num_participant);
-            return this.coursRepository.save(cours);
-        } else {
-            throw new CoursNotFoundException("Le cours n'existe pas");
-        }
-    }
-
-    @Override
     public Iterable<Cours> getCoursEnseignant(Long num_enseignant) {
         return this.coursRepository.findAllByIdEnseignant(num_enseignant);
     }

@@ -1,10 +1,12 @@
 package fr.miage.toulouse.m2.lautard.helene.gestioncours.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.ParticipantDTO;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.http.codec.multipart.Part;
 
 import java.util.Date;
 import java.util.List;
@@ -40,9 +42,9 @@ public class Cours {
     private Long idEnseignant;
 
     @Field
-    List<Long> listeParticipants;
+    List<ParticipantDTO> listeParticipants;
 
-    public Cours(String titre, int niveau,Date date, String lieu, Long duree, Long idEnseignant, List<Long> listeParticipants) {
+    public Cours(String titre, int niveau,Date date, String lieu, Long duree, Long idEnseignant, List<ParticipantDTO> listeParticipants) {
 
         this.titre = titre;
         this.niveau = niveau;

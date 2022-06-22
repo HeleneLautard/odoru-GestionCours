@@ -33,16 +33,6 @@ public interface GestionCours {
     List<Cours> getListeCours();
 
     /**
-     * Ajouter un participant à un cours
-     * @param num_cours numéro du cours
-     * @param num_participant numéro de participation
-     * @return cours mis à jour
-     * @throws CoursNotFoundException
-     * @throws InscriptionException
-     */
-    Cours inscriptionCours(Long num_cours, Long num_participant) throws CoursNotFoundException, InscriptionException;
-
-    /**
      * Obtenir la liste des cours d'un enseignant
      * @param num_enseignant numéro d'identification d'un enseignant
      * @return liste des cours

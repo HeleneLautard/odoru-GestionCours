@@ -1,12 +1,16 @@
-package fr.miage.toulouse.m2.lautard.helene.gestioncours.entities;
+package fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class CoursDTO {
 
     private Long numCours;
@@ -17,9 +21,9 @@ public class CoursDTO {
     private String lieu;
     private Long duree;
     private Long idEnseignant;
-    List<Long> listeParticipants;
+    List<ParticipantDTO> listeParticipants;
 
-    public CoursDTO(String titre, int niveau,Date date, String lieu, Long duree, Long idEnseignant, List<Long> listeParticipants) {
+    public CoursDTO(String titre, int niveau,Date date, String lieu, Long duree, Long idEnseignant, List<ParticipantDTO> listeParticipants) {
 
         this.titre = titre;
         this.niveau = niveau;

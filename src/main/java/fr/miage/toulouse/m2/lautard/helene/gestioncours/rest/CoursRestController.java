@@ -1,10 +1,12 @@
 package fr.miage.toulouse.m2.lautard.helene.gestioncours.rest;
 
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.CoursDTO;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.entities.Cours;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.BadDateException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.CoursNotFoundException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.InscriptionException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.services.GestionCours;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +22,14 @@ public class CoursRestController {
     @Autowired
     GestionCours gestionCours;
 
-
+    ModelMapper modelMapper = new ModelMapper();
 
     // TO DO : Gestion role
     @PostMapping("")
-    public Cours postCours(@RequestBody Cours cours) {
+    public CoursDTO postCours(@RequestBody CoursDTO cours) {
         try {
-            return this.gestionCours.creerCours(cours);
+            Cours rqBody = this.modelMapper.map(cours, Cours.class);
+            return this.modelMapper.map(this.gestionCours.creerCours(rqBody), CoursDTO.class);
         } catch (BadDateException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "test");
@@ -80,17 +83,6 @@ public class CoursRestController {
         return this.gestionCours.getCoursParticipant(idl);
     }
 
-    // TO DO : Gestion rôle
-    @PutMapping("/{id}/inscriptions")
-    public Cours postInscriptionParticipant(@PathVariable("id") Long idCours, @RequestParam("participant") String idPar) {
-        long idParticipant = Long.parseLong(idPar);
-        try {
-            return this.gestionCours.inscriptionCours(idCours, idParticipant);
-        } catch (CoursNotFoundException | InscriptionException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
-    }
 
     /**
      * Suppression d'un cours
