@@ -1,6 +1,8 @@
 package fr.miage.toulouse.m2.lautard.helene.gestioncours.rest;
 
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.CoursDTO;
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.ParticipantDTO;
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.StatistiquesCoursDTO;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.entities.Cours;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.BadDateException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.CoursNotFoundException;
@@ -34,6 +36,12 @@ public class CoursRestController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "test");
         }
+    }
+
+    @PutMapping("")
+    public CoursDTO updateCours(@RequestBody CoursDTO cours){
+        Cours rqBody = this.modelMapper.map(cours, Cours.class);
+        return this.modelMapper.map(this.gestionCours.saveCours(rqBody), CoursDTO.class);
     }
 
     /**
@@ -72,17 +80,6 @@ public class CoursRestController {
         return this.gestionCours.getCoursEnseignant(idl);
     }
 
-    /**
-     * Obtenir les informations sur les cours auxquels un adherent a participé
-     * @param id identifiant de l'adherent
-     * @return liste des cours
-     */
-    @GetMapping("/participant")
-    public Iterable<Cours> getListeCoursParticipant(@RequestParam("participant") String id) {
-        long idl = Long.parseLong(id);
-        return this.gestionCours.getCoursParticipant(idl);
-    }
-
 
     /**
      * Suppression d'un cours
@@ -96,5 +93,30 @@ public class CoursRestController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, ex.getMessage(), ex);
         }
+    }
+
+    @GetMapping(path="/statistiques")
+    public Long getNbCours(){
+        return this.gestionCours.getNbCours();
+    }
+
+    @GetMapping(path="/statistiques/{id}")
+    public StatistiquesCoursDTO getStatistiquesCours(@PathVariable("id") Long idCours){
+        try{
+            return this.gestionCours.getStatistiquesCours(idCours);
+        } catch (CoursNotFoundException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Obtenir les informations sur les cours auxquels un adherent a participé
+     * @param participant adherent
+     * @return liste des cours avec indications des présences/absences
+     */
+    @GetMapping("/statistiques/participants/participant")
+    public Iterable<Cours> getListeCoursParticipant(@RequestBody ParticipantDTO participant) {
+        return this.gestionCours.getCoursParticipant(participant);
     }
 }

@@ -1,5 +1,7 @@
 package fr.miage.toulouse.m2.lautard.helene.gestioncours.services;
 
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.ParticipantDTO;
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.StatistiquesCoursDTO;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.entities.Cours;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.BadDateException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.CoursNotFoundException;
@@ -41,10 +43,10 @@ public interface GestionCours {
 
     /**
      * Obtenir la liste des cours auquel un adherent a participé
-     * @param num_participant numéro d'identification d'un adherent
+     * @param participant numéro d'identification d'un adherent
      * @return liste des cours
      */
-    Iterable<Cours> getCoursParticipant(Long num_participant);
+    Iterable<Cours> getCoursParticipant(ParticipantDTO participant);
 
     /**
      * Suppression d'un cours de la base de données
@@ -52,4 +54,24 @@ public interface GestionCours {
      * @throws CoursNotFoundException
      */
     void deleteCours(Long id)throws CoursNotFoundException;
+
+    /**
+     * Récupérer le nombre de cours
+     * @return nombre de cours
+     */
+    Long getNbCours();
+
+    /**
+     * Nombre et liste des élèves présents à un cours
+     * @param idCours identifiant du cours
+     * @return statistiques
+     */
+    StatistiquesCoursDTO getStatistiquesCours(Long idCours) throws CoursNotFoundException;
+
+    /**
+     * Enregistrer les modifications d'un cours
+     * @param cours
+     * @return
+     */
+    Cours saveCours(Cours cours);
 }

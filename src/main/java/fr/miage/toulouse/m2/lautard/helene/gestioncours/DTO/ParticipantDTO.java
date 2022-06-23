@@ -11,9 +11,10 @@ public class ParticipantDTO {
 
     private Long numMembre;
     private String NomPrenom;
-    private boolean presence = false;
+    private Boolean presence;
 
     public ParticipantDTO(Long id, String nomPrenom) {
+        this.presence=false;
         this.numMembre=id;
         this.NomPrenom = nomPrenom;
     }

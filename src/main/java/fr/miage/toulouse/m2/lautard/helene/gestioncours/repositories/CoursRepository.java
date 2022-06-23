@@ -1,6 +1,7 @@
 package fr.miage.toulouse.m2.lautard.helene.gestioncours.repositories;
 
 
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.ParticipantDTO;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.entities.Cours;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -12,5 +13,5 @@ public interface CoursRepository extends MongoRepository<Cours, Long> {
 
     List<Cours> findAllByIdEnseignant(Long idEnseignant);
 
-    List<Cours> findAllByListeParticipantsContains(Long idParticipant);
+    List<Cours> findAllByListeParticipantsContains(ParticipantDTO Participant);
 }

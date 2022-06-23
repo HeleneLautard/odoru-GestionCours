@@ -1,5 +1,7 @@
 package fr.miage.toulouse.m2.lautard.helene.gestioncours.services;
 
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.ParticipantDTO;
+import fr.miage.toulouse.m2.lautard.helene.gestioncours.DTO.StatistiquesCoursDTO;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.entities.Cours;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.BadDateException;
 import fr.miage.toulouse.m2.lautard.helene.gestioncours.exceptions.CoursNotFoundException;
@@ -9,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class GestionCoursImpl implements GestionCours {
@@ -56,8 +56,12 @@ public class GestionCoursImpl implements GestionCours {
     }
 
     @Override
-    public Iterable<Cours> getCoursParticipant(Long num_participant) {
-        return this.coursRepository.findAllByListeParticipantsContains(num_participant);
+    public Iterable<Cours> getCoursParticipant(ParticipantDTO participant) {
+        participant.setPresence(true);
+        List<Cours> list = this.coursRepository.findAllByListeParticipantsContains(participant);
+        participant.setPresence(false);
+        list.addAll(this.coursRepository.findAllByListeParticipantsContains(participant));
+        return list;
     }
 
     @Override
@@ -68,5 +72,36 @@ public class GestionCoursImpl implements GestionCours {
         } else {
             throw new CoursNotFoundException("Le cours n'existe pas, impossible de le supprimer");
         }
+    }
+
+    @Override
+    public Long getNbCours() {
+        return this.coursRepository.count();
+    }
+
+    @Override
+    public StatistiquesCoursDTO getStatistiquesCours(Long idCours) throws CoursNotFoundException {
+        StatistiquesCoursDTO stats = new StatistiquesCoursDTO();
+        int nbPresents = 0;
+        ArrayList<ParticipantDTO> listePresents = new ArrayList<>();
+        if(this.coursRepository.existsById(idCours)){
+            Cours cours = this.coursRepository.findById(idCours).get();
+            for(ParticipantDTO p:cours.getListeParticipants()){
+                if(p.getPresence()){
+                    nbPresents++;
+                    listePresents.add(p);
+                }
+            }
+            stats.setNbElevesPresent(nbPresents);
+            stats.setListePresents(listePresents);
+            return stats;
+        } else {
+            throw new CoursNotFoundException("Cours inconnu");
+        }
+    }
+
+    @Override
+    public Cours saveCours(Cours cours) {
+        return this.coursRepository.save(cours);
     }
 }
