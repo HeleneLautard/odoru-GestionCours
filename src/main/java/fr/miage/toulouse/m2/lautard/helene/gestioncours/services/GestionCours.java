@@ -74,4 +74,18 @@ public interface GestionCours {
      * @return
      */
     Cours saveCours(Cours cours);
+
+    /**
+     * Récupérer les cours d'un niveau donné
+     * @param niveau
+     * @return
+     */
+    List<Cours> findByNiveau(int niveau);
+
+    /**
+     * Récupérer les cours d'un enseignant
+     * @param idEnseignant
+     * @return
+     */
+    List<Cours> findByEnseignant(Long idEnseignant);
 }

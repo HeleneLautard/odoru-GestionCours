@@ -119,4 +119,15 @@ public class CoursRestController {
     public Iterable<Cours> getListeCoursParticipant(@RequestBody ParticipantDTO participant) {
         return this.gestionCours.getCoursParticipant(participant);
     }
+
+    @GetMapping(path="/niveau/{niveau}")
+    public Iterable<Cours> getCoursNiveau(@PathVariable("niveau") int niveau){
+        return this.gestionCours.findByNiveau(niveau);
+    }
+
+
+    @GetMapping(path="/enseignant/{idEnseignant}")
+    public Iterable<Cours> getCoursNiveau(@PathVariable("idEnseignant") Long idEnseignant){
+        return this.gestionCours.findByEnseignant(idEnseignant);
+    }
 }

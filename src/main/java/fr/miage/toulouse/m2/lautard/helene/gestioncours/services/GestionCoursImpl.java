@@ -104,4 +104,14 @@ public class GestionCoursImpl implements GestionCours {
     public Cours saveCours(Cours cours) {
         return this.coursRepository.save(cours);
     }
+
+    @Override
+    public List<Cours> findByNiveau(int niveau) {
+        return this.coursRepository.findCoursByNiveau(niveau);
+    }
+
+    @Override
+    public List<Cours> findByEnseignant(Long idEnseignant) {
+        return this.coursRepository.findAllByIdEnseignant(idEnseignant);
+    }
 }
